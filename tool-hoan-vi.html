@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tool Hoán Vị 12 Ký Tự</title>
+</head>
+<body>
+    <h1>Công Cụ Hoán Vị</h1>
+    <input id="inputCharacters" placeholder="Nhập 12 ký tự" maxlength="12">
+    <button onclick="generatePermutations()">Tạo Hoán Vị</button>
+    <div id="results"></div>
+
+    <script>
+        function generatePermutations() {
+            const input = document.getElementById("inputCharacters").value;
+            if (input.length !== 12) {
+                alert("Vui lòng nhập đúng 12 ký tự.");
+                return;
+            }
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = ''; // Xóa kết quả cũ
+
+            let results = [];
+            const permute = (str, l, r) => {
+                if (l === r) results.push(str);
+                else {
+                    for (let i = l; i <= r; i++) {
+                        str = swap(str, l, i);
+                        permute(str, l + 1, r);
+                        str = swap(str, l, i);  // Hoán đổi lại
+                    }
+                }
+            };
+
+            const swap = (a, i, j) => {
+                const tempArr = a.split("");
+                const temp = tempArr[i];
+                tempArr[i] = tempArr[j];
+                tempArr[j] = temp;
+                return tempArr.join("");
+            };
+
+            permute(input, 0, input.length - 1);
+            results.forEach(p => resultsDiv.innerHTML += `<p>${p}</p>`);
+        }
+    </script>
+</body>
+</html>
